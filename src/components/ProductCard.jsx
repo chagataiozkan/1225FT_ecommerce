@@ -3,7 +3,7 @@ export default function ProductCard() {
     <div className="flex flex-col items-center">
       <div className="w-full overflow-hidden">
         <img
-          src="/images/product-card.png"
+          src="/images/product-cover-5.png"
           alt="Product"
           className="w-full object-cover"
         />

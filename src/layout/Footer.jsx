@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className="bg-white">
-      <div className="bg-[#FAFAFA]">
-        <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <div className="bg-[#FFFFFF]">
+        <div className="mx-auto max-w-6xl lg:max-w-352.5 px-6 lg:px-0 py-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <Link to="/" className="text-2xl font-bold text-[#252B42]">Bandage</Link>
 
           <div className="flex gap-5 text-[#23A6F0]">
@@ -16,7 +16,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mx-auto max-w-6xl lg:max-w-352.5 px-6 lg:px-0 py-10">
         <div className="flex flex-col gap-8 lg:flex-row lg:flex-wrap lg:justify-between">
           <div>
             <h5 className="mb-4 text-base font-bold text-[#252B42]">

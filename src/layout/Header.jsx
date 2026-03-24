@@ -53,7 +53,7 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="navbar-light p-6 lg:px-10 lg:flex lg:items-center lg:justify-between">
+        <div className="navbar-light p-12 lg:px-10 lg:flex lg:items-center lg:justify-between">
           <div className="flex justify-between items-center lg:shrink-0">
             <Link to="/" className="text-2xl text-[#252B42]">
               Bandage
@@ -66,35 +66,50 @@ export default function Header() {
               <Menu size={22} />
             </div>
           </div>
-          <div className="navbar-light-right flex flex-col lg:flex-row lg:justify-between lg:items-center lg:flex-1 mt-24 lg:ml-32 lg:mt-0 gap-8">
+          <div className="navbar-light-right flex flex-col lg:flex-row lg:justify-between lg:items-center lg:flex-1 mt-16 lg:ml-32 lg:mt-0 gap-8">
             <nav>
               <ul className="navbar-light-right-pages flex flex-col lg:flex-row items-center text-[#737373] text-3xl lg:text-sm lg:gap-6">
                 <li className="mb-12 lg:mb-0">
                   <Link to="/">Home</Link>
                 </li>
-                <li className="items-center gap-1 hidden lg:flex mb-12 lg:mb-0">
+                <li className="items-center gap-1 lg:flex mb-12 lg:mb-0">
                   <Link to="/shop">Shop</Link>
                   <ChevronDown size={18} className="hidden lg:block" />
                 </li>
-                <li>
-                  <Link to="/about" className="hidden lg:block">
+                <li className="mb-12 lg:mb-0">
+                  <Link to="/about" className="lg:block">
                     About
                   </Link>
                 </li>
-                <li>
-                  <a className="hidden lg:block">Blog</a>
-                </li>
-                <li className="lg:hidden mb-12 lg:mb-0">
-                  <Link to="/product/1">Product</Link>
-                </li>
-                <li className="lg:hidden mb-12 lg:mb-0">
-                  <a>Pricing</a>
+                <li className="mb-12 lg:mb-0">
+                  <a className="lg:block">Blog</a>
                 </li>
                 <li className="mb-12 lg:mb-0">
                   <Link to="/contact">Contact</Link>
                 </li>
-                <li>
-                  <a className="hidden lg:block">Pages</a>
+                <li className="mb-12 lg:mb-0">
+                  <a className="lg:block">Pages</a>
+                </li>
+                <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
+                  <User size={40} />
+                  <Link to="/login" className="text-3xl">
+                    Login / Register
+                  </Link>
+                </li>
+                <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
+                  <a>
+                    <Search size={40} />
+                  </a>
+                </li>
+                <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
+                  <Link to="/cart">
+                    <ShoppingCart size={40} />
+                  </Link>
+                </li>
+                <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7 ml-1.5">
+                  <a>
+                    <Heart size={40} />
+                  </a>
                 </li>
               </ul>
             </nav>
