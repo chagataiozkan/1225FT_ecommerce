@@ -1,9 +1,9 @@
-import EditorsPick from "../components/EditorsPick";
-import FeaturedPosts from "../components/FeaturedPosts";
-import FeaturedProducts from "../components/FeaturedProducts";
-import HeroSlider from "../components/HeroSlider";
-import ProductBanner from "../components/ProductBanner";
-import ProductSlider from "../components/ProductSlider";
+import EditorsPick from "../components/HomePageEditorsPick";
+import FeaturedPosts from "../components/HomePageFeaturedPosts";
+import FeaturedProducts from "../components/HomePageFeaturedProducts";
+import HeroSlider from "../components/HomePageHeroSlider";
+import ProductBanner from "../components/HomePageProductBanner";
+import ProductSlider from "../components/HomePageProductSlider";
 
 export default function HomePage() {
   return (
