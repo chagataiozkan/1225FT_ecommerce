@@ -85,7 +85,7 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
-                    <a className="lg:block">Blog</a>
+                    <Link className="lg:block">Blog</Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
                     <Link to="/contact">Contact</Link>

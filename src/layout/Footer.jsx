@@ -5,8 +5,10 @@ export default function Footer() {
   return (
     <footer className="bg-white">
       <div className="bg-[#FFFFFF]">
-        <div className="mx-auto max-w-6xl lg:max-w-352.5 px-6 lg:px-0 py-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <Link to="/" className="text-2xl font-bold text-[#252B42]">Bandage</Link>
+        <div className="mx-auto max-w-6xl lg:max-w-352.5 px-6 lg:px-0 py-10 border-b border-[#E6E6E6] flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+          <Link to="/" className="text-2xl font-bold text-[#252B42]">
+            Bandage
+          </Link>
 
           <div className="flex gap-5 text-[#23A6F0]">
             <Facebook size={18} />
@@ -26,7 +28,7 @@ export default function Footer() {
               <Link to="/about">About Us</Link>
               <p>Career</p>
               <p>We Are Hiring</p>
-              <p>Blog</p>
+              <Link to="/team">Blog</Link>
             </div>
           </div>
 
@@ -36,7 +38,7 @@ export default function Footer() {
               <Link to="/about">About Us</Link>
               <p>Career</p>
               <p>We Are Hiring</p>
-              <p>Blog</p>
+              <Link to="/team">Blog</Link>
             </div>
           </div>
 
