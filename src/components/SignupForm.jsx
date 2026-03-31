@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRoles } from "../store/actions/clientActions";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
@@ -13,8 +15,10 @@ import {
 export default function SignupForm() {
   const navigate = useNavigate();
 
-  const [roles, setRoles] = useState([]);
   const [apiError, setApiError] = useState("");
+
+  const dispatch = useDispatch();
+  const roles = useSelector((state) => state.client.roles);
 
   const {
     register,
@@ -42,25 +46,20 @@ export default function SignupForm() {
   const isStore = selectedRole === "2";
 
   useEffect(() => {
-    async function fetchRoles() {
-      try {
-        const response = await api.get("/roles");
-        setRoles(response.data);
+    if (roles.length === 0) {
+      dispatch(fetchRoles());
+    }
+  }, [dispatch, roles]);
 
-        const customerRole = response.data.find(
-          (role) => role.code === "customer"
-        );
+  useEffect(() => {
+    if (roles.length > 0) {
+      const customerRole = roles.find((role) => role.code === "customer");
 
-        if (customerRole) {
-          setValue("role_id", String(customerRole.id));
-        }
-      } catch (error) {
-        console.log(error);
+      if (customerRole) {
+        setValue("role_id", String(customerRole.id));
       }
     }
-
-    fetchRoles();
-  }, [setValue]);
+  }, [roles, setValue]);
 
   async function onSubmit(formData) {
     setApiError("");
@@ -94,7 +93,7 @@ export default function SignupForm() {
 
       setApiError(
         error?.response?.data?.message ||
-          "Signup failed. Please check your information."
+          "Signup failed. Please check your information.",
       );
     }
   }
