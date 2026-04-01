@@ -13,9 +13,18 @@ import {
   ChevronDown,
 } from "lucide-react";
 
+import { useSelector } from "react-redux";
+
 import { Link } from "react-router-dom";
 
+import md5 from "md5";
+
 export default function Header() {
+  const user = useSelector((state) => state.client.user);
+  const emailHash = user?.email
+  ? md5(user.email.trim().toLowerCase())
+  : null;
+
   return (
     <>
       <header className="w-full font-bold">
@@ -94,10 +103,30 @@ export default function Header() {
                     <a className="lg:block">Pages</a>
                   </li>
                   <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
-                    <User size={40} />
-                    <Link to="/login" className="text-3xl">
-                      Login / Register
-                    </Link>
+                    {user?.email ? (
+                      <img
+                        src={`https://www.gravatar.com/avatar/${emailHash}`}
+                        alt="user"
+                        className="h-10 w-10 rounded-full"
+                      />
+                    ) : (
+                      <User size={40} />
+                    )}
+                    {user?.email ? (
+                      <Link
+                        to="/login"
+                        className="text-100 font-bold text-[#23A6F0]"
+                      >
+                        {user.name || user.email}
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/login"
+                        className="text-100 font-bold text-[#23A6F0]"
+                      >
+                        Login / Register
+                      </Link>
+                    )}
                   </li>
                   <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
                     <a>
@@ -119,8 +148,30 @@ export default function Header() {
               <nav className="hidden lg:flex">
                 <ul className="navbar-light-right-login flex items-center gap-4 text-[#23A6F0] text-sm">
                   <li className="flex items-center gap-1">
-                    <User size={18} />
-                    <Link to="/login">Login / Register</Link>
+                    {user?.email ? (
+                      <img
+                        src={`https://www.gravatar.com/avatar/${emailHash}`}
+                        alt="user"
+                        className="h-6 w-6 rounded-full"
+                      />
+                    ) : (
+                      <User size={18} />
+                    )}
+                    {user?.email ? (
+                      <Link
+                        to="/login"
+                        className="text-sm font-bold text-[#23A6F0]"
+                      >
+                        {user.name || user.email}
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/login"
+                        className="text-sm font-bold text-[#23A6F0]"
+                      >
+                        Login / Register
+                      </Link>
+                    )}
                   </li>
                   <li>
                     <a>

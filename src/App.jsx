@@ -13,7 +13,23 @@ import Shop from "./pages/Shop";
 import Signup from "./pages/Signup";
 import Team from "./pages/Team";
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { verifyToken } from "./store/actions/clientActions";
+import api from "./api/axios";
+
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if(!token) return;
+
+    api.defaults.headers.common["Authorization"] = token;
+    dispatch(verifyToken());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Routes>

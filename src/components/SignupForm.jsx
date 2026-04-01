@@ -85,7 +85,7 @@ export default function SignupForm() {
 
       navigate(-1, {
         state: {
-          warning: "You need to click link in email to activate your account!",
+          warning: "You need to click the link in email to activate your account!",
         },
       });
     } catch (error) {
