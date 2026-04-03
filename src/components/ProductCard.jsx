@@ -6,8 +6,8 @@ export default function ProductCard({product}) {
       <div className="flex flex-col items-center">
         <div className="w-full overflow-hidden">
           <img
-            src={product.images?.[0]?.url}
-            alt={product.name}
+            src={product?.images?.[0]?.url}
+            alt={product?.name}
             className="w-full object-cover"
           />
         </div>
