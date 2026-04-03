@@ -1,3 +1,5 @@
+import api from "../../api/axios";
+
 export const SET_CATEGORIES = "SET_CATEGORIES";
 export const SET_PRODUCT_LIST = "SET_PRODUCT_LIST";
 export const SET_TOTAL = "SET_TOTAL";
@@ -40,3 +42,37 @@ export const setFilter = (filter) => ({
   type: SET_FILTER,
   payload: filter,
 });
+
+export const fetchCategories = () => {
+  return async function (dispatch) {
+    try {
+      const response = await api.get("/categories");
+      dispatch(setCategories(response.data));
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Category fetch failed.",
+      };
+    }
+  };
+};
+
+export const fetchProducts = (queryString = "") => {
+  return async function (dispatch) {
+    try {
+      dispatch(setFetchState("FETCHING"));
+      const response = await api.get(`/products${queryString}`);
+      dispatch(setProductList(response.data.products));
+      dispatch(setTotal(response.data.total));
+      dispatch(setFetchState("FETCHED"));
+      return { success: true, data: response.data };
+    } catch (error) {
+      dispatch(setFetchState("FAILED"));
+      return {
+        success: false,
+        error: error.response?.data?.message || "Product fetch failed",
+      };
+    }
+  };
+};

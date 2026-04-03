@@ -14,16 +14,38 @@ import {
 } from "lucide-react";
 
 import { useSelector } from "react-redux";
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import md5 from "md5";
 
 export default function Header() {
   const user = useSelector((state) => state.client.user);
-  const emailHash = user?.email
-  ? md5(user.email.trim().toLowerCase())
-  : null;
+
+  const categories = useSelector((state) => state.product.categories);
+
+  const [isShopOpen, setIsShopOpen] = useState(false);
+
+  const womensCategories = categories.filter(
+    (category) => category.gender === "k",
+  );
+  const mensCategories = categories.filter(
+    (category) => category.gender === "e",
+  );
+  const topWomensCategories = [...womensCategories]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 5);
+  const topMensCategories = [...mensCategories]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 5);
+
+  const emailHash = user?.email ? md5(user.email.trim().toLowerCase()) : null;
+  const getURLPath = (category) => {
+    const gender = category.gender === "k" ? "kadin" : "erkek";
+    const categoryName = category.code.split(":")[1];
+
+    return `/shop/${gender}/${categoryName}/${category.id}`;
+  };
 
   return (
     <>
@@ -84,9 +106,83 @@ export default function Header() {
                   <li className="mb-12 lg:mb-0">
                     <Link to="/">Home</Link>
                   </li>
-                  <li className="items-center gap-1 lg:flex mb-12 lg:mb-0">
+                  <li className="mb-12 lg:hidden">
                     <Link to="/shop">Shop</Link>
-                    <ChevronDown size={18} className="hidden lg:block" />
+                  </li>
+
+                  <li className="relative mb-12 hidden lg:flex lg:mb-0 lg:items-center lg:gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setIsShopOpen((prev) => !prev)}
+                      className="flex cursor-pointer items-center gap-1 text-[#737373]"
+                    >
+                      Shop
+                      <ChevronDown
+                        size={18}
+                        className={
+                          isShopOpen ? "rotate-180 transition" : "transition"
+                        }
+                      />
+                    </button>
+
+                    {isShopOpen && (
+                      <div className="absolute left-0 top-full z-50 mt-2 rounded-md bg-white p-4 shadow-lg">
+                        <div className="flex gap-10 min-w-80">
+                          <div>
+                            <h4 className="mb-2 text-sm font-bold text-[#252B42]">
+                              Kadın
+                            </h4>
+                            <ul className="flex flex-col gap-3">
+                              {topWomensCategories.map((category) => (
+                                <li
+                                  key={category.id}
+                                  className="flex items-center gap-3"
+                                >
+                                  <img
+                                    src={category.img}
+                                    alt={category.title}
+                                    className="h-10 w-10 rounded-md object-cover"
+                                  />
+
+                                  <Link
+                                    to={getURLPath(category)}
+                                    className="text-sm text-[#737373]"
+                                  >
+                                    {category.title}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="mb-2 text-sm font-bold text-[#252B42]">
+                              Erkek
+                            </h4>
+                            <ul className="flex flex-col gap-3">
+                              {topMensCategories.map((category) => (
+                                <li
+                                  key={category.id}
+                                  className="flex items-center gap-3"
+                                >
+                                  <img
+                                    src={category.img}
+                                    alt={category.title}
+                                    className="h-10 w-10 rounded-md object-cover"
+                                  />
+
+                                  <Link
+                                    to={getURLPath(category)}
+                                    className="text-sm text-[#737373]"
+                                  >
+                                    {category.title}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </li>
                   <li className="mb-12 lg:mb-0">
                     <Link to="/about" className="lg:block">
@@ -94,7 +190,7 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
-                    <Link className="lg:block">Blog</Link>
+                    <Link to="/team" className="lg:block">Blog</Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
                     <Link to="/contact">Contact</Link>

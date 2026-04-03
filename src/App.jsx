@@ -16,6 +16,7 @@ import Team from "./pages/Team";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { verifyToken } from "./store/actions/clientActions";
+import { fetchCategories } from "./store/actions/productActions";
 import api from "./api/axios";
 
 function App() {
@@ -30,6 +31,10 @@ function App() {
     dispatch(verifyToken());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch])
+
   return (
     <BrowserRouter>
       <Routes>
@@ -43,6 +48,7 @@ function App() {
           <Route path="previous-orders" element={<PreviousOrders />} />
           <Route path="product" element={<ProductDetail />} />
           <Route path="shop" element={<Shop />} />
+          <Route path="shop/:gender/:categoryName/:categoryId" element={<Shop />} />
           <Route path="signup" element={<Signup />} />
           <Route path="team" element={<Team />} />
         </Route>
