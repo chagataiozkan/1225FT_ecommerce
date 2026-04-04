@@ -2,12 +2,13 @@ import ShopBrands from "../components/ShopBrands";
 import ShopHeader from "../components/ShopHeader";
 import ShopProducts from "../components/ShopProducts";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../store/actions/productActions";
 
 export default function Shop() {
   const { gender, categoryName, categoryId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const categories = useSelector((state) => state.product.categories);
 
@@ -20,6 +21,9 @@ export default function Shop() {
   const [sortOption, setSortOption] = useState("");
   const [filterText, setFilterText] = useState("");
   const [appliedFilter, setAppliedFilter] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 24;
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -36,10 +40,14 @@ export default function Shop() {
       params.set("filter", appliedFilter);
     }
 
+    params.set("limit", limit);
+    params.set("offset", (currentPage - 1) * limit);
+
     const queryString = params.toString() ? `?${params.toString()}` : "";
 
+    setSearchParams(params);
     dispatch(fetchProducts(queryString));
-  }, [dispatch, categoryId, sortOption, appliedFilter]);
+  }, [dispatch, categoryId, sortOption, appliedFilter, currentPage]);
 
   return (
     <>
@@ -53,6 +61,9 @@ export default function Shop() {
           setAppliedFilter(filterText);
           setCurrentPage?.(1);
         }}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        limit={limit}
       />
       <ShopBrands />
     </>

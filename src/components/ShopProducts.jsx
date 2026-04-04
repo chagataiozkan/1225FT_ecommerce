@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import ProductCard from "./ProductCard";
 import { List, Grid } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -9,32 +9,26 @@ export default function ShopProducts({
   filterText,
   setFilterText,
   onApplyFilter,
+  currentPage,
+  setCurrentPage,
+  limit,
 }) {
   const products = useSelector((state) => state.product.productList);
   const total = useSelector((state) => state.product.total);
 
   const fetchState = useSelector((state) => state.product.fetchState);
 
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
-  const itemsPerPage = isDesktop ? 12 : 4;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = products.slice(startIndex, startIndex + itemsPerPage);
-  const totalPages = Math.ceil(products.length / itemsPerPage);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const totalPages = Math.ceil(total / limit);
+  const visiblePages = Array.from({ length: totalPages }, (_, i) => i + 1).filter(
+  (page) =>
+    page === 1 ||
+    page === totalPages ||
+    Math.abs(page - currentPage) <= 1
+);
 
   useEffect(() => {
-    setCurrentPage(1);
-  }, [itemsPerPage]);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   if (fetchState === "FETCHING") {
     return (
@@ -88,7 +82,7 @@ export default function ShopProducts({
       </div>
 
       <div className="flex flex-col gap-10 lg:flex-row lg:flex-wrap lg:justify-between">
-        {currentProducts.map((product) => (
+        {products.map((product) => (
           <div key={product.id} className="w-full lg:w-[20%]">
             <ProductCard product={product} />
           </div>
@@ -98,12 +92,16 @@ export default function ShopProducts({
         <div className="flex min-w-max rounded-md border border-[#BDBDBD] bg-white shadow-sm">
           <button
             onClick={() => setCurrentPage(1)}
-            className="border-r border-[#E9E9E9] px-6 py-4 text-[#BDBDBD]"
+            disabled={currentPage === 1}
+            className={`border-r border-[#E9E9E9] px-6 py-4 ${
+              currentPage === 1
+                ? "text-[#BDBDBD] cursor-not-allowed"
+                : "text-[#23A6F0]"
+            }`}
           >
             First
           </button>
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const page = i + 1;
+          {visiblePages.map((page) => {
             const isActive = currentPage === page;
             return (
               <button
@@ -118,10 +116,13 @@ export default function ShopProducts({
             );
           })}
           <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
-            className="px-6 py-4 font-bold text-[#23A6F0]"
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-6 py-4 font-bold ${
+              currentPage === totalPages
+                ? "text-[#BDBDBD] cursor-not-allowed"
+                : "text-[#23A6F0]"
+            }`}
           >
             Next
           </button>
