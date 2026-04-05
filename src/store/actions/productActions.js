@@ -7,6 +7,8 @@ export const SET_FETCH_STATE = "SET_FETCH_STATE";
 export const SET_LIMIT = "SET_LIMIT";
 export const SET_OFFSET = "SET_OFFSET";
 export const SET_FILTER = "SET_FILTER";
+export const SET_SELECTED_PRODUCT = "SET_SELECTED_PRODUCT";
+export const SET_PRODUCT_DETAIL_LOADING = "SET_PRODUCT_DETAIL_LOADING";
 
 export const setCategories = (categories) => ({
   type: SET_CATEGORIES,
@@ -43,6 +45,16 @@ export const setFilter = (filter) => ({
   payload: filter,
 });
 
+export const setSelectedProduct = (product) => ({
+  type: SET_SELECTED_PRODUCT,
+  payload: product,
+});
+
+export const setProductDetailLoading = (state) => ({
+  type: SET_PRODUCT_DETAIL_LOADING,
+  payload: state,
+});
+
 export const fetchCategories = () => {
   return async function (dispatch) {
     try {
@@ -72,6 +84,28 @@ export const fetchProducts = (queryString = "") => {
       return {
         success: false,
         error: error.response?.data?.message || "Product fetch failed",
+      };
+    }
+  };
+};
+
+export const fetchProductById = (productId) => {
+  return async function (dispatch) {
+    try {
+      dispatch(setProductDetailLoading("FETCHING"));
+
+      const response = await api.get(`/products/${productId}`);
+
+      dispatch(setSelectedProduct(response.data));
+      dispatch(setProductDetailLoading("FETCHED"));
+
+      return { success: true, data: response.data };
+    } catch (error) {
+      dispatch(setProductDetailLoading("FAILED"));
+
+      return {
+        success: false,
+        error: error.response?.data?.message || "Product detail fetch failed",
       };
     }
   };

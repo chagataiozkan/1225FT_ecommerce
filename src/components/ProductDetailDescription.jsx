@@ -1,32 +1,49 @@
 import { Heart, ShoppingCart, Eye, Star } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export default function ProductDetailDescription() {
+  const selectedProduct = useSelector((state) => state.product.selectedProduct);
+
+  if (!selectedProduct) return null;
+
+  const roundedRating = Math.round(selectedProduct.rating || 0);
+
   return (
-    <div className="w-full mb-30">
-      <h1 className="text-2xl font-semibold text-[#252B42]">Floating Phone</h1>
+    <div className="mb-30 w-full">
+      <h1 className="text-2xl font-semibold text-[#252B42]">
+        {selectedProduct.name}
+      </h1>
 
       <div className="mt-4 flex items-center gap-2">
         <div className="flex items-center gap-1 text-[#F3CD03]">
-          <Star size={18} fill="currentColor" strokeWidth={1.5} />
-          <Star size={18} fill="currentColor" strokeWidth={1.5} />
-          <Star size={18} fill="currentColor" strokeWidth={1.5} />
-          <Star size={18} fill="currentColor" strokeWidth={1.5} />
-          <Star size={18} fill="currentColor" strokeWidth={1.5} />
+          {[...Array(5)].map((_, index) => (
+            <Star
+              key={index}
+              size={18}
+              fill={index < roundedRating ? "currentColor" : "none"}
+              strokeWidth={1.5}
+            />
+          ))}
         </div>
 
-        <span className="text-sm font-bold text-[#737373]">10 Reviews</span>
+        <span className="text-sm font-bold text-[#737373]">
+          {selectedProduct.rating?.toFixed(1)} Rating
+        </span>
       </div>
 
-      <p className="mt-6 text-3xl font-bold text-[#252B42]">$1139.33</p>
+      <p className="mt-6 text-3xl font-bold text-[#252B42]">
+        ${selectedProduct.price}
+      </p>
 
       <p className="mt-4 text-sm font-bold text-[#737373]">
-        Availability : <span className="text-[#23A6F0]">In Stock</span>
+        Availability :{" "}
+        <span className="text-[#23A6F0]">
+          {selectedProduct.stock > 0 ? "In Stock" : "Out of Stock"}
+        </span>
       </p>
 
       <p className="mt-8 max-w-70 text-sm font-semibold leading-6 text-[#858585] lg:max-w-100">
-        Met minim Mollie non desert Alamo est sit cliquey dolor do met sent.
-        RELIT official consequent door ENIM RELIT Mollie. Excitation venial
-        consequent sent nostrum met.
+        {selectedProduct.description}
       </p>
 
       <div className="mt-6 h-px w-full max-w-[320px] bg-[#BDBDBD] lg:max-w-100" />

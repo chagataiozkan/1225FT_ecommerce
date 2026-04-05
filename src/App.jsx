@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if(!token) return;
+    if (!token) return;
 
     api.defaults.headers.common["Authorization"] = token;
     dispatch(verifyToken());
@@ -33,7 +33,7 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchCategories());
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
@@ -46,9 +46,15 @@ function App() {
           <Route path="login" element={<LoginForm />} />
           <Route path="order" element={<Order />} />
           <Route path="previous-orders" element={<PreviousOrders />} />
-          <Route path="product" element={<ProductDetail />} />
           <Route path="shop" element={<Shop />} />
-          <Route path="shop/:gender/:categoryName/:categoryId" element={<Shop />} />
+          <Route
+            path="shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId"
+            element={<ProductDetail />}
+          />
+          <Route
+            path="shop/:gender/:categoryName/:categoryId"
+            element={<Shop />}
+          />
           <Route path="signup" element={<Signup />} />
           <Route path="team" element={<Team />} />
         </Route>
