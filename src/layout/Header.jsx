@@ -21,10 +21,21 @@ import md5 from "md5";
 
 export default function Header() {
   const user = useSelector((state) => state.client.user);
-
+  const cart = useSelector((state) => state.shoppingCart.cart);
   const categories = useSelector((state) => state.product.categories);
 
+  const totalCartItems = cart.reduce(
+    (total, cartItem) => total + cartItem.count,
+    0,
+  );
+
+  const totalCartPrice = cart.reduce(
+    (total, cartItem) => total + cartItem.product.price * cartItem.count,
+    0,
+  );
+
   const [isShopOpen, setIsShopOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const womensCategories = categories.filter(
     (category) => category.gender === "k",
@@ -94,8 +105,13 @@ export default function Header() {
               </Link>
               <div className="flex items-center gap-4 lg:hidden">
                 <Search size={22} />
-                <Link to="/cart">
+                <Link to="/cart" className="relative">
                   <ShoppingCart size={22} />
+                  {totalCartItems > 0 && (
+                    <span className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#23A6F0] px-1 text-[10px] font-bold text-white">
+                      {totalCartItems}
+                    </span>
+                  )}
                 </Link>
                 <Menu size={22} />
               </div>
@@ -190,7 +206,9 @@ export default function Header() {
                     </Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
-                    <Link to="/team" className="lg:block">Blog</Link>
+                    <Link to="/team" className="lg:block">
+                      Blog
+                    </Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
                     <Link to="/contact">Contact</Link>
@@ -230,8 +248,13 @@ export default function Header() {
                     </a>
                   </li>
                   <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
-                    <Link to="/cart">
+                    <Link to="/cart" className="relative">
                       <ShoppingCart size={25} />
+                      {totalCartItems > 0 && (
+                        <span className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#23A6F0] px-1 text-[10px] font-bold text-white">
+                          {totalCartItems}
+                        </span>
+                      )}
                     </Link>
                   </li>
                   <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7 ml-1.5">
@@ -274,10 +297,74 @@ export default function Header() {
                       <Search size={18} />
                     </a>
                   </li>
-                  <li className="flex items-center gap-1">
-                    <Link to="/cart">
+                  <li
+                    className="relative flex items-center gap-1"
+                    onMouseEnter={() => setIsCartOpen(true)}
+                    onMouseLeave={() => setIsCartOpen(false)}
+                  >
+                    <Link to="/cart" className="relative">
                       <ShoppingCart size={18} />
+                      {totalCartItems > 0 && (
+                        <span className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#23A6F0] px-1 text-[10px] font-bold text-white">
+                          {totalCartItems}
+                        </span>
+                      )}
                     </Link>
+                    {isCartOpen && (
+                      <div className="absolute right-0 top-full z-50 mt-3 w-80 rounded-md bg-white p-4 text-[#252B42] shadow-lg">
+                        <h4 className="border-b border-[#E8E8E8] pb-3 text-sm font-bold">
+                          My Cart ({cart.length} Product
+                          {cart.length !== 1 ? "s" : ""})
+                        </h4>
+
+                        {cart.length === 0 ? (
+                          <p className="py-4 text-sm text-[#737373]">
+                            Your cart is empty.
+                          </p>
+                        ) : (
+                          <>
+                            <div className="max-h-80 space-y-4 overflow-y-auto py-4">
+                              {cart.map((cartItem) => (
+                                <div
+                                  key={cartItem.product.id}
+                                  className="flex items-center gap-3 border-b border-[#F3F3F3] pb-3 last:border-b-0"
+                                >
+                                  <img
+                                    src={cartItem.product.images?.[0]?.url}
+                                    alt={cartItem.product.name}
+                                    className="h-16 w-16 rounded-md object-cover"
+                                  />
+
+                                  <div className="min-w-0 flex-1">
+                                    <p className="line-clamp-2 text-sm font-bold text-[#252B42]">
+                                      {cartItem.product.name}
+                                    </p>
+
+                                    <p className="mt-1 text-xs text-[#737373]">
+                                      Count: {cartItem.count}
+                                    </p>
+
+                                    <p className="mt-1 text-sm font-bold text-[#23A6F0]">
+                                      ${cartItem.product.price}
+                                    </p>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="border-t border-[#E8E8E8] pt-3">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm font-bold text-[#252B42]">
+                                  Total
+                                </span>
+                                <span className="text-sm font-bold text-[#23A6F0]">
+                                  ${totalCartPrice.toFixed(2)}
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
                   </li>
                   <li>
                     <a>

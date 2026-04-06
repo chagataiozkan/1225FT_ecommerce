@@ -1,5 +1,6 @@
 import { Heart, ShoppingCart, Eye, Star } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addToCart } from "../store/actions/shoppingCartActions";
 
 export default function ProductDetailDescription() {
   const selectedProduct = useSelector((state) => state.product.selectedProduct);
@@ -7,6 +8,8 @@ export default function ProductDetailDescription() {
   if (!selectedProduct) return null;
 
   const roundedRating = Math.round(selectedProduct.rating || 0);
+
+  const dispatch = useDispatch();
 
   return (
     <div className="mb-30 w-full">
@@ -69,7 +72,8 @@ export default function ProductDetailDescription() {
 
         <button
           type="button"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E8E8E8] bg-white text-[#252B42]"
+          onClick={() => dispatch(addToCart(selectedProduct))}
+          className="flex h-10 w-10 items-center justify-center cursor-pointer rounded-full border border-[#E8E8E8] bg-white text-[#252B42]"
         >
           <ShoppingCart size={18} />
         </button>
