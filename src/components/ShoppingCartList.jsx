@@ -12,7 +12,7 @@ export default function ShoppingCartList({ cart }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 shadow-sm">
       {cart.map((item) => (
         <ShoppingCartItemRow key={item.product.id} item={item} />
       ))}

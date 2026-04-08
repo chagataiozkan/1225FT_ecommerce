@@ -6,35 +6,39 @@ import {
 } from "../store/actions/shoppingCartActions";
 import { Trash2 } from "lucide-react";
 
-export default function CartItemRow({ item }) {
+export default function ShoppingCartItemRow({ item }) {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-col gap-4 rounded-md border border-[#E8E8E8] bg-white p-4 lg:flex-row lg:items-center lg:justify-between">
-      <div className="flex items-center gap-4">
+    <div className="flex flex-col gap-4 rounded-md border border-[#E8E8E8] bg-white p-4 lg:flex-row lg:items-center">
+      {/* LEFT */}
+      <div className="flex min-w-0 flex-1 items-center gap-4">
         <input
           type="checkbox"
           checked={item.checked}
           onChange={() => dispatch(toggleCartItemChecked(item.product.id))}
-          className="h-8 w-8 accent-[#23A6F0]"
-        />
-        <img
-          src={item.product.images?.[0]?.url}
-          className="h-24 w-24 rounded-md object-cover"
+          className="h-8 w-8 shrink-0 accent-[#23A6F0]"
         />
 
-        <div>
-          <h2 className="text-base font-bold text-[#252B42]">
+        <img
+          src={item.product.images?.[0]?.url}
+          alt={item.product.name}
+          className="h-24 w-24 shrink-0 rounded-md object-cover"
+        />
+
+        <div className="min-w-0 flex-1">
+          <h2 className="truncate text-base font-bold text-[#252B42]">
             {item.product.name}
           </h2>
 
-          <p className="mt-2 text-sm text-[#737373]">
+          <p className="mt-2 truncate text-sm text-[#737373]">
             {item.product.description}
           </p>
         </div>
       </div>
 
-      <div className="flex items-center justify-between lg:min-w-60 lg:justify-end lg:gap-8">
+      {/* RIGHT */}
+      <div className="flex shrink-0 items-center justify-between lg:ml-6 lg:w-[320px] lg:justify-end lg:gap-6">
         <div className="flex items-center rounded-md border border-[#E8E8E8] bg-white shadow-sm">
           <button
             type="button"

@@ -15,7 +15,7 @@ import {
 
 import { useSelector } from "react-redux";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import md5 from "md5";
 
@@ -23,6 +23,7 @@ export default function Header() {
   const user = useSelector((state) => state.client.user);
   const cart = useSelector((state) => state.shoppingCart.cart);
   const categories = useSelector((state) => state.product.categories);
+  const navigate = useNavigate();
 
   const totalCartItems = cart.reduce(
     (total, cartItem) => total + cartItem.count,
@@ -36,6 +37,9 @@ export default function Header() {
 
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobileUserOpen, setIsMobileUserOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const womensCategories = categories.filter(
     (category) => category.gender === "k",
@@ -51,11 +55,20 @@ export default function Header() {
     .slice(0, 5);
 
   const emailHash = user?.email ? md5(user.email.trim().toLowerCase()) : null;
+
   const getURLPath = (category) => {
     const gender = category.gender === "k" ? "kadin" : "erkek";
     const categoryName = category.code.split(":")[1];
 
     return `/shop/${gender}/${categoryName}/${category.id}`;
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsOpen(false);
+    setIsMobileUserOpen(false);
+    navigate("/");
+    window.location.reload();
   };
 
   return (
@@ -113,10 +126,19 @@ export default function Header() {
                     </span>
                   )}
                 </Link>
-                <Menu size={22} />
+                <button
+                  type="button"
+                  onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                >
+                  <Menu size={22} />
+                </button>
               </div>
             </div>
-            <div className="navbar-light-right flex flex-col lg:flex-row lg:justify-between lg:items-center lg:flex-1 mt-16 lg:ml-32 lg:mt-0 gap-8">
+            <div
+              className={`navbar-light-right ${
+                isMobileMenuOpen ? "flex" : "hidden"
+              } flex-col mt-16 gap-8 lg:mt-0 lg:ml-32 lg:flex lg:flex-1 lg:flex-row lg:items-center lg:justify-between`}
+            >
               <nav>
                 <ul className="navbar-light-right-pages flex flex-col lg:flex-row items-center text-[#737373] text-3xl lg:text-sm lg:gap-6">
                   <li className="mb-12 lg:mb-0">
@@ -216,29 +238,57 @@ export default function Header() {
                   <li className="mb-12 lg:mb-0">
                     <a className="lg:block">Pages</a>
                   </li>
-                  <li className="flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
+                  <li className="relative flex items-center gap-4 lg:hidden text-[#23A6F0] mb-7">
                     {user?.email ? (
-                      <img
-                        src={`https://www.gravatar.com/avatar/${emailHash}`}
-                        alt="user"
-                        className="h-10 w-10 rounded-full"
-                      />
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setIsMobileUserOpen((prev) => !prev)}
+                          className="flex items-center gap-3 font-bold text-[#23A6F0]"
+                        >
+                          <img
+                            src={`https://www.gravatar.com/avatar/${emailHash}`}
+                            alt="user"
+                            className="h-10 w-10 rounded-full"
+                          />
+                          <span>{user.name || user.email}</span>
+                          <ChevronDown
+                            size={20}
+                            className={
+                              isMobileUserOpen
+                                ? "rotate-180 transition"
+                                : "transition"
+                            }
+                          />
+                        </button>
+
+                        {isMobileUserOpen && (
+                          <div className="absolute left-0 top-full z-50 mt-3 w-56 rounded-md border border-[#E8E8E8] bg-white py-2 shadow-lg">
+                            <Link
+                              to="/previous-orders"
+                              onClick={() => setIsMobileUserOpen(false)}
+                              className="block px-4 py-3 text-sm text-[#252B42] transition hover:bg-[#F5F5F5]"
+                            >
+                              Previous Orders
+                            </Link>
+
+                            <button
+                              type="button"
+                              onClick={handleLogout}
+                              className="block w-full px-4 py-3 text-left text-sm text-red-500 transition hover:bg-[#F5F5F5]"
+                            >
+                              Logout
+                            </button>
+                          </div>
+                        )}
+                      </>
                     ) : (
-                      <User size={40} />
-                    )}
-                    {user?.email ? (
                       <Link
                         to="/login"
-                        className="text-100 font-bold text-[#23A6F0]"
+                        className="flex items-center gap-3 font-bold text-[#23A6F0]"
                       >
-                        {user.name || user.email}
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/login"
-                        className="text-100 font-bold text-[#23A6F0]"
-                      >
-                        Login / Register
+                        <User size={40} />
+                        <span>Login / Register</span>
                       </Link>
                     )}
                   </li>
@@ -266,29 +316,55 @@ export default function Header() {
               </nav>
               <nav className="hidden lg:flex">
                 <ul className="navbar-light-right-login flex items-center gap-4 text-[#23A6F0] text-sm">
-                  <li className="flex items-center gap-1">
+                  <li className="relative flex items-center gap-1">
                     {user?.email ? (
-                      <img
-                        src={`https://www.gravatar.com/avatar/${emailHash}`}
-                        alt="user"
-                        className="h-6 w-6 rounded-full"
-                      />
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setIsOpen((prev) => !prev)}
+                          className="flex items-center gap-2 text-sm font-bold text-[#23A6F0]"
+                        >
+                          <img
+                            src={`https://www.gravatar.com/avatar/${emailHash}`}
+                            alt="user"
+                            className="h-6 w-6 rounded-full"
+                          />
+                          <span>{user.name || user.email}</span>
+                          <ChevronDown
+                            size={16}
+                            className={
+                              isOpen ? "rotate-180 transition" : "transition"
+                            }
+                          />
+                        </button>
+
+                        {isOpen && (
+                          <div className="absolute right-0 top-full z-50 mt-3 w-48 rounded-md border border-[#E8E8E8] bg-white py-2 shadow-lg">
+                            <Link
+                              to="/previous-orders"
+                              onClick={() => setIsOpen(false)}
+                              className="block px-4 py-3 text-sm text-[#252B42] transition hover:bg-[#F5F5F5]"
+                            >
+                              Previous Orders
+                            </Link>
+
+                            <button
+                              type="button"
+                              onClick={handleLogout}
+                              className="block w-full px-4 py-3 text-left text-sm text-red-500 transition hover:bg-[#F5F5F5]"
+                            >
+                              Logout
+                            </button>
+                          </div>
+                        )}
+                      </>
                     ) : (
-                      <User size={18} />
-                    )}
-                    {user?.email ? (
                       <Link
                         to="/login"
-                        className="text-sm font-bold text-[#23A6F0]"
+                        className="flex items-center gap-1 text-sm font-bold text-[#23A6F0]"
                       >
-                        {user.name || user.email}
-                      </Link>
-                    ) : (
-                      <Link
-                        to="/login"
-                        className="text-sm font-bold text-[#23A6F0]"
-                      >
-                        Login / Register
+                        <User size={18} />
+                        <span>Login / Register</span>
                       </Link>
                     )}
                   </li>
