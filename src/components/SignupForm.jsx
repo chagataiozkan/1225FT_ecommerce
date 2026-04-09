@@ -4,6 +4,7 @@ import { fetchRoles } from "../store/actions/clientActions";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { toast } from "react-toastify";
 import {
   emailRegex,
   passwordRegex,
@@ -83,11 +84,9 @@ export default function SignupForm() {
     try {
       await api.post("/signup", payload);
 
-      navigate(-1, {
-        state: {
-          warning: "You need to click the link in email to activate your account!",
-        },
-      });
+      toast.success("Account created! Please check your email to activate it.");
+
+      navigate(-1);
     } catch (error) {
       console.log(error);
 

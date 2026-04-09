@@ -30,6 +30,8 @@ export default function LoginFormPage() {
       return;
     }
 
+    toast.success("Login successful!");
+
     navigate(-1);
   }
 

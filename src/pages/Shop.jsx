@@ -25,6 +25,8 @@ export default function Shop() {
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 24;
 
+  const isFilterApplied = appliedFilter.trim() !== "";
+
   useEffect(() => {
     const params = new URLSearchParams();
 
@@ -47,7 +49,27 @@ export default function Shop() {
 
     setSearchParams(params);
     dispatch(fetchProducts(queryString));
-  }, [dispatch, categoryId, sortOption, appliedFilter, currentPage]);
+  }, [
+    dispatch,
+    categoryId,
+    sortOption,
+    appliedFilter,
+    currentPage,
+    limit,
+    setSearchParams,
+  ]);
+
+  const handleFilterButtonClick = () => {
+    if (isFilterApplied) {
+      setFilterText("");
+      setAppliedFilter("");
+      setCurrentPage(1);
+      return;
+    }
+
+    setAppliedFilter(filterText.trim());
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -57,13 +79,11 @@ export default function Shop() {
         setSortOption={setSortOption}
         filterText={filterText}
         setFilterText={setFilterText}
-        onApplyFilter={() => {
-          setAppliedFilter(filterText);
-          setCurrentPage?.(1);
-        }}
+        onApplyFilter={handleFilterButtonClick}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         limit={limit}
+        isFilterApplied={isFilterApplied}
       />
       <ShopBrands />
     </>

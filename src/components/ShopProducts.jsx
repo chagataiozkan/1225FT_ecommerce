@@ -12,6 +12,7 @@ export default function ShopProducts({
   currentPage,
   setCurrentPage,
   limit,
+  isFilterApplied,
 }) {
   const products = useSelector((state) => state.product.productList);
   const total = useSelector((state) => state.product.total);
@@ -76,7 +77,7 @@ export default function ShopProducts({
             onClick={onApplyFilter}
             className="rounded-md bg-[#23A6F0] px-8 py-4 font-bold text-white"
           >
-            Filter
+            {isFilterApplied ? "Clear Filter" : "Filter"}
           </button>
         </div>
       </div>
