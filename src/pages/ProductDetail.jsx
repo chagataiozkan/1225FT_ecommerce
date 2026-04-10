@@ -24,6 +24,10 @@ export default function ProductDetail() {
     dispatch(fetchProductById(productId));
   }, [dispatch, productId]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [productId]);
+
   if (productDetailLoading === "FETCHING") {
     return (
       <section className="flex min-h-100 items-center justify-center bg-[#FAFAFA]">

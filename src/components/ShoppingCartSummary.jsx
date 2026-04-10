@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function ShoppingCartSummary({ cart }) {
   const selectedItems = cart.filter((item) => item.checked);
+
   const productTotal = selectedItems.reduce(
     (sum, item) => sum + item.product.price * item.count,
     0,
@@ -9,8 +10,9 @@ export default function ShoppingCartSummary({ cart }) {
 
   const navigate = useNavigate();
 
-  const shipping = productTotal > 150 ? 0 : 29.99;
-  const discount = productTotal > 300 ? productTotal * 0.1 : 0;
+  const isDisabled = selectedItems.length === 0;
+  const shipping = isDisabled ? 0 : productTotal > 150 ? 0 : 29.99;
+  const discount = isDisabled ? 0 : productTotal > 300 ? productTotal * 0.1 : 0;
   const grandTotal = productTotal + shipping - discount;
 
   return (
@@ -37,7 +39,7 @@ export default function ShoppingCartSummary({ cart }) {
           </span>
         </div>
 
-        <div className="border-t border-[#E8E8E8] pt-4 flex justify-between text-base font-bold">
+        <div className="flex justify-between border-t border-[#E8E8E8] pt-4 text-base font-bold">
           <span>Total</span>
           <span className="text-[#23A6F0]">${grandTotal.toFixed(2)}</span>
         </div>
@@ -45,8 +47,16 @@ export default function ShoppingCartSummary({ cart }) {
 
       <button
         type="button"
-        onClick={() => navigate("/order")}
-        className="mt-6 w-full rounded-md bg-[#23A6F0] py-3 text-sm font-bold text-white transition hover:bg-[#1e8bb8] cursor-pointer"
+        disabled={isDisabled}
+        onClick={() => {
+          if (isDisabled) return;
+          navigate("/order");
+        }}
+        className={`mt-6 w-full rounded-md py-3 text-sm font-bold text-white transition ${
+          isDisabled
+            ? "cursor-not-allowed bg-gray-300"
+            : "cursor-pointer bg-[#23A6F0] hover:bg-[#1e8bb8]"
+        }`}
       >
         Create Order
       </button>
