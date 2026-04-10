@@ -46,7 +46,7 @@ export default function ShoppingCartSummary({ cart }) {
       <button
         type="button"
         onClick={() => navigate("/order")}
-        className="mt-6 w-full rounded-md bg-[#23A6F0] py-3 text-sm font-bold text-white transition hover:bg-[#1e8bb8]"
+        className="mt-6 w-full rounded-md bg-[#23A6F0] py-3 text-sm font-bold text-white transition hover:bg-[#1e8bb8] cursor-pointer"
       >
         Create Order
       </button>

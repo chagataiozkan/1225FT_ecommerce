@@ -229,7 +229,7 @@ export default function Header() {
                   </li>
                   <li className="mb-12 lg:mb-0">
                     <Link to="/team" className="lg:block">
-                      Blog
+                      Team
                     </Link>
                   </li>
                   <li className="mb-12 lg:mb-0">
@@ -421,7 +421,7 @@ export default function Header() {
                                     </p>
 
                                     <p className="mt-1 text-sm font-bold text-[#23A6F0]">
-                                      ${cartItem.product.price}
+                                      ${(cartItem.product.price * cartItem.count).toFixed(2)}
                                     </p>
                                   </div>
                                 </div>

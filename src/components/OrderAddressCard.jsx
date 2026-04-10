@@ -37,7 +37,7 @@ export default function OrderAddressCard({
                   e.stopPropagation();
                   onEdit(address);
                 }}
-                className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E8E8E8] text-[#737373] transition hover:border-[#23A6F0] hover:text-[#23A6F0]"
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E8E8E8] text-[#737373] transition hover:border-[#23A6F0] hover:text-[#23A6F0] cursor-pointer"
               >
                 <Pencil size={16} />
               </button>
@@ -47,7 +47,7 @@ export default function OrderAddressCard({
                   e.stopPropagation();
                   onDelete(address.id);
                 }}
-                className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E8E8E8] text-[#737373] transition hover:border-red-400 hover:text-red-500"
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-[#E8E8E8] text-[#737373] transition hover:border-red-400 hover:text-red-500 cursor-pointer"
               >
                 <Trash2 size={16} />
               </button>

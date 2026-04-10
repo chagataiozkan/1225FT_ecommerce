@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -42,9 +43,9 @@ export default function HeroSlider() {
                       scale.
                     </p>
 
-                    <button className="rounded-md bg-[#2DC071] px-8 py-4 text-xl font-bold text-white lg:px-10 lg:text-2xl">
+                    <Link to="/shop" className="rounded-md bg-[#2DC071] px-8 py-4 text-xl font-bold text-white lg:px-10 lg:text-2xl">
                       SHOP NOW
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

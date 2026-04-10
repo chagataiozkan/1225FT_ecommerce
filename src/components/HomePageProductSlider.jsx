@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import { Link } from "react-router-dom";
 
 export default function HeroSlider() {
   return (
@@ -47,9 +48,9 @@ export default function HeroSlider() {
                     <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:justify-start">
                       <span className="text-2xl font-bold lg:mb-0">$16.48</span>
 
-                      <button className="rounded-md bg-[#2DC071] px-8 py-3 text-sm font-bold text-white lg:px-10 lg:py-4 lg:text-base">
+                      <Link to="/shop" className="rounded-md bg-[#2DC071] px-8 py-3 text-sm font-bold text-white lg:px-10 lg:py-4 lg:text-base">
                         ADD TO CART
-                      </button>
+                      </Link>
                     </div>
 
                   </div>

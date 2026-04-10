@@ -45,7 +45,7 @@ export default function ShoppingCartItemRow({ item }) {
             onClick={() =>
               dispatch(updateCartItemCount(item.product.id, "decrease"))
             }
-            className="flex h-10 w-10 items-center justify-center text-lg font-bold text-[#252B42] transition hover:bg-[#F6F6F6]"
+            className="flex h-10 w-10 items-center justify-center text-lg font-bold text-[#252B42] transition hover:bg-[#F6F6F6] cursor-pointer"
           >
             -
           </button>
@@ -59,7 +59,7 @@ export default function ShoppingCartItemRow({ item }) {
             onClick={() =>
               dispatch(updateCartItemCount(item.product.id, "increase"))
             }
-            className="flex h-10 w-10 items-center justify-center text-lg font-bold text-[#252B42] transition hover:bg-[#F6F6F6]"
+            className="flex h-10 w-10 items-center justify-center text-lg font-bold text-[#252B42] transition hover:bg-[#F6F6F6] cursor-pointer"
           >
             +
           </button>
@@ -72,7 +72,7 @@ export default function ShoppingCartItemRow({ item }) {
         <button
           type="button"
           onClick={() => dispatch(removeFromCart(item.product.id))}
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-[#E8E8E8] text-[#737373] transition hover:border-red-400 hover:text-red-500"
+          className="flex h-10 w-10 items-center justify-center rounded-md border border-[#E8E8E8] text-[#737373] transition hover:border-red-400 hover:text-red-500 cursor-pointer"
         >
           <Trash2 size={18} />
         </button>

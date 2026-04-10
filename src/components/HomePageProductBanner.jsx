@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function ProductBanner() {
   return (
     <section className="w-full bg-[#FFFFFF]">
@@ -15,9 +17,9 @@ export default function ProductBanner() {
             We know how large objects will act, but things on a small scale.
           </p>
           <div className="mb-10 flex flex-col gap-8 lg:gap-4 lg:flex-row">
-            <button className="rounded-md bg-[#23A6F0] lg:bg-[#2DC071] px-10 py-4 text-sm font-bold text-white">
+            <Link to="/shop" className="rounded-md bg-[#23A6F0] lg:bg-[#2DC071] px-10 py-4 text-sm font-bold text-white">
               BUY NOW
-            </button>
+            </Link>
             <button className="rounded-md border border-[#23A6F0] lg:border-[#2DC071] px-10 py-4 text-sm font-bold text-[#23A6F0] lg:text-[#2DC071]">
               Learn More
             </button>

@@ -77,9 +77,9 @@ export default function Footer() {
                 placeholder="Your Email"
                 className="min-w-0 flex-1 bg-[#F9F9F9] px-4 py-3 text-sm outline-none placeholder:text-[#737373]"
               />
-              <button className="shrink-0 bg-[#23A6F0] px-4 py-3 text-sm text-white">
+              <Link to="/signup" className="shrink-0 bg-[#23A6F0] px-4 py-3 text-sm text-white">
                 Subscribe
-              </button>
+              </Link>
             </div>
 
             <p className="mt-2 text-xs text-[#737373]">
