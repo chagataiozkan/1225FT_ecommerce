@@ -82,7 +82,7 @@ export default function SignupForm() {
     }
 
     try {
-      await api.post("/signup", payload);
+      await api.post("/auth/signup", payload);
 
       toast.success("Account created! Please check your email to activate it.");
 

@@ -53,17 +53,27 @@ export const loginUser = (formData) => {
     try {
       const { rememberMe, ...loginData } = formData;
 
-      const response = await api.post("/login", loginData);
+      const loginResponse = await api.post("/auth/login", loginData);
+
+      const token = loginResponse.data.token;
 
       if (rememberMe) {
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", token);
       } else {
         localStorage.removeItem("token");
       }
 
-      dispatch(setUser(response.data));
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      return { success: true, data: response.data };
+      const meResponse = await api.get("/users/me");
+
+      dispatch(setUser(meResponse.data));
+
+      return {
+        success: true,
+        data: meResponse.data,
+      };
+
     } catch (error) {
       return {
         success: false,
@@ -77,14 +87,8 @@ export const loginUser = (formData) => {
 export const verifyToken = () => {
   return async function (dispatch) {
     try {
-      const response = await api.get("/verify");
+      const response = await api.get("/users/me");
       dispatch(setUser(response.data));
-
-      if (response.data?.token) {
-        localStorage.setItem("token", response.data.token);
-        api.defaults.headers.common["Authorization"] = response.data.token;
-      }
-
       return { success: true, data: response.data };
     } catch (error) {
       localStorage.removeItem("token");
@@ -116,18 +120,19 @@ export const fetchAddresses = () => {
 export const addAddress = (formData) => {
   return async function (dispatch) {
     try {
-      const token = localStorage.getItem("token");
-      const response = await api.post("/user/address", formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await api.post("/user/address", formData);
+
       await dispatch(fetchAddresses());
-      return { success: true, data: response.data };
+
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || "Address add failed.",
+        error:
+          error.response?.data?.message || "Address add failed.",
       };
     }
   };
@@ -136,20 +141,16 @@ export const addAddress = (formData) => {
 export const deleteAddress = (addressId) => {
   return async function (dispatch) {
     try {
-      const token = localStorage.getItem("token");
+      await api.delete(`/user/address/${addressId}`);
 
-      await api.delete(`/user/address/${addressId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
       await dispatch(fetchAddresses());
+
       return { success: true };
     } catch (error) {
-      console.log(error);
       return {
         success: false,
-        error: error.response?.data?.message || "Address delete failed.",
+        error:
+          error.response?.data?.message || "Address delete failed.",
       };
     }
   };
@@ -158,21 +159,19 @@ export const deleteAddress = (addressId) => {
 export const updateAddress = (formData) => {
   return async function (dispatch) {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await api.put("/user/address", formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await api.put("/user/address", formData);
 
       await dispatch(fetchAddresses());
 
-      return { success: true, data: response.data };
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || "Address update failed.",
+        error:
+          error.response?.data?.message || "Address update failed.",
       };
     }
   };
@@ -196,19 +195,19 @@ export const fetchCards = () => {
 export const addCard = (formData) => {
   return async function (dispatch) {
     try {
-      const token = localStorage.getItem("token");
+      const response = await api.post("/user/card", formData);
 
-      const response = await api.post("/user/card", formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
       await dispatch(fetchCards());
-      return { success: true, data: response.data };
+
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || "Card add failed.",
+        error:
+          error.response?.data?.message || "Card add failed.",
       };
     }
   };
@@ -217,13 +216,7 @@ export const addCard = (formData) => {
 export const deleteCard = (cardId) => {
   return async function (dispatch) {
     try {
-      const token = localStorage.getItem("token");
-
-      await api.delete(`/user/card/${cardId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      await api.delete(`/user/card/${cardId}`);
 
       await dispatch(fetchCards());
 
@@ -231,7 +224,8 @@ export const deleteCard = (cardId) => {
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || "Card delete failed.",
+        error:
+          error.response?.data?.message || "Card delete failed.",
       };
     }
   };
@@ -240,43 +234,38 @@ export const deleteCard = (cardId) => {
 export const updateCard = (formData) => {
   return async function (dispatch) {
     try {
-      const token = localStorage.getItem("token");
-
-      const response = await api.put("/user/card", formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await api.put("/user/card", formData);
 
       await dispatch(fetchCards());
 
-      return { success: true, data: response.data };
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.message || "Card update failed.",
+        error:
+          error.response?.data?.message || "Card update failed.",
       };
     }
   };
 };
 
 export const createOrder = (orderData) => {
-  return async function (dispatch) {
+  return async function () {
     try {
-      const token = localStorage.getItem("token");
+      const response = await api.post("/order", orderData);
 
-      const response = await api.post("/order", orderData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      return { success: true, data: response.data };
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
-      console.log(error);
       return {
         success: false,
-        error: error.response?.data?.message || "Order creation failed.",
+        error:
+          error.response?.data?.message || "Order creation failed.",
       };
     }
   };

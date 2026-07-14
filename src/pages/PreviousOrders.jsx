@@ -16,12 +16,6 @@ export default function PreviousOrders() {
   const isVerifiedUser = Boolean(user?.email);
 
   useEffect(() => {
-    if (token) {
-      api.defaults.headers.common["Authorization"] = token;
-    }
-  }, [token]);
-
-  useEffect(() => {
     async function loadOrders() {
       setLoading(true);
 

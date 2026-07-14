@@ -5,7 +5,7 @@ export default function ProductCard({ product }) {
   const categories = useSelector((state) => state.product.categories);
 
   const productCategory = categories.find(
-    (category) => String(category.id) === String(product?.category_id),
+    (category) => String(category.id) === String(product?.category?.id),
   );
 
   const slugify = (text) =>

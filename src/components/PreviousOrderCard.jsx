@@ -2,13 +2,8 @@ import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import PreviousOrderProductRow from "./PreviousOrderProductRow";
 
-function maskCardNumber(cardNumber) {
-  const cardString = String(cardNumber);
-  return `**** **** **** ${cardString.slice(-4)}`;
-}
-
 function formatDate(dateString) {
-  return new Date(dateString).toLocaleString();
+  return new Date(dateString).toLocaleString("tr-TR");
 }
 
 export default function PreviousOrderCard({ order }) {
@@ -19,20 +14,23 @@ export default function PreviousOrderCard({ order }) {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div className="space-y-2">
           <p className="text-sm text-[#737373]">
-            Order ID: <span className="font-semibold text-[#252B42]">{order.id}</span>
+            Order ID:{" "}
+            <span className="font-semibold text-[#252B42]">
+              {order.id}
+            </span>
           </p>
 
           <p className="text-sm text-[#737373]">
             Date:{" "}
             <span className="font-semibold text-[#252B42]">
-              {formatDate(order.order_date)}
+              {formatDate(order.orderDate)}
             </span>
           </p>
 
           <p className="text-sm text-[#737373]">
-            Card:{" "}
+            Address:{" "}
             <span className="font-semibold text-[#252B42]">
-              {order.card_name} - {maskCardNumber(order.card_no)}
+              {order.addressTitle}
             </span>
           </p>
         </div>
@@ -61,7 +59,10 @@ export default function PreviousOrderCard({ order }) {
 
           <div className="space-y-4">
             {order.products.map((product) => (
-              <PreviousOrderProductRow key={product.id} product={product} />
+              <PreviousOrderProductRow
+                key={`${order.id}-${product.productId}`}
+                product={product}
+              />
             ))}
           </div>
         </div>

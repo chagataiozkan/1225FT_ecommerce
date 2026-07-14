@@ -2,10 +2,7 @@ import ProductCard from "./ProductCard";
 import { useSelector } from "react-redux";
 
 export default function FeaturedProducts() {
-  const products = useSelector((state) => state.product.productList).slice(
-    0,
-    8,
-  );
+  const products = (useSelector((state) => state.product.productList) ?? []).slice(0, 8);
 
   return (
     <section className="bg-[#FFFFFF] px-8 py-12 lg:px-20 lg:py-20">

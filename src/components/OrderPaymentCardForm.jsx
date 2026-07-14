@@ -62,7 +62,7 @@ export default function OrderPaymentCardForm({ onCancel, initialData = null }) {
     };
 
     const result = initialData
-      ? await dispatch(addCard(payload))
+      ? await dispatch(updateCard(payload))
       : await dispatch(addCard(payload));
 
     if (!result.success) {

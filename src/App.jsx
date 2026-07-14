@@ -27,7 +27,7 @@ function App() {
 
     if (!token) return;
 
-    api.defaults.headers.common["Authorization"] = token;
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     dispatch(verifyToken());
   }, [dispatch]);
 
